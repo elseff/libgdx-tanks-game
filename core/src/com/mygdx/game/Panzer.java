@@ -124,31 +124,33 @@ public class Panzer {
     }
 
     public void move() {
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+        if (type == GameObjectType.PLAYER) {
+            if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+                if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+                    direction.rotateDeg(-rotationalVelocity);
+                } else {
+                    direction.rotateDeg(rotationalVelocity);
+                }
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+                if (Gdx.input.isKeyPressed(Input.Keys.W))
+                    direction.rotateDeg(-rotationalVelocity);
+                else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+                    direction.rotateDeg(rotationalVelocity);
+                } else {
+                    direction.rotateDeg(-rotationalVelocity);
+                }
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+                if (direction.isZero()) direction.x += speed;
+                body.setLinearVelocity(direction.x, direction.y);
+            }
             if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-                direction.rotateDeg(-rotationalVelocity);
-            } else {
-                direction.rotateDeg(rotationalVelocity);
+                if (direction.isZero()) direction.x += speed;
+                body.setLinearVelocity(-direction.x / 1.7f, -direction.y / 1.7f);
             }
+            body.setTransform(body.getPosition().x, body.getPosition().y, direction.angleRad());
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            if (Gdx.input.isKeyPressed(Input.Keys.W))
-                direction.rotateDeg(-rotationalVelocity);
-            else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-                direction.rotateDeg(rotationalVelocity);
-            } else {
-                direction.rotateDeg(-rotationalVelocity);
-            }
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            if (direction.isZero()) direction.x += speed;
-            body.setLinearVelocity(direction.x, direction.y);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            if (direction.isZero()) direction.x += speed;
-            body.setLinearVelocity(-direction.x / 1.7f, -direction.y / 1.7f);
-        }
-        body.setTransform(body.getPosition().x, body.getPosition().y, direction.angleRad());
         position = body.getPosition();
     }
 

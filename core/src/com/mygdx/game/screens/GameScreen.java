@@ -40,7 +40,7 @@ public class GameScreen implements Screen {
         debugRenderer = new Box2DDebugRenderer();
 
         enemies = new Array<>();
-        for (int i = 2; i < 12; i++) {
+        for (int i = 2; i < 7; i++) {
             enemies.add(new Panzer(world, i * 250, 550, GameObjectType.ENEMY));
         }
         me = new Panzer(world, 400, 400);
@@ -77,7 +77,13 @@ public class GameScreen implements Screen {
 
         for (int i = 0; i < enemies.size; i++) {
             Panzer currentEnemy = enemies.get(i);
-            currentEnemy.rotateTo(currentEnemy.getPosition().sub(me.getPosition()).angleRad());
+            currentEnemy.move();
+            Vector2 playerPosition = new Vector2();
+            playerPosition.set(me.getPosition().x*PPM,me.getPosition().y*PPM);
+            Vector2 currentEnemyPosition = new Vector2();
+            currentEnemyPosition.set(currentEnemy.getPosition().x*PPM, currentEnemy.getPosition().y*PPM);
+            float angle = playerPosition.sub(currentEnemyPosition).angleDeg();
+            currentEnemy.rotateTo(angle);
         }
 
         game.batch.setProjectionMatrix(game.camera.combined);
