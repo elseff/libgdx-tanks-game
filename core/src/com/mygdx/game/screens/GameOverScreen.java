@@ -11,7 +11,6 @@ import com.mygdx.game.MyGdxGame;
  * Screen of Game Over
  */
 public class GameOverScreen implements Screen {
-
     private final MyGdxGame game;
     private Timer timer;
 
@@ -23,10 +22,9 @@ public class GameOverScreen implements Screen {
     public void show() {
         game.font = game.createFont(50);
         timer = new Timer();
-        game.camera.position.set(0,0,0);
+        game.camera.position.set(0, 0, 0);
         game.camera.update();
         game.batch.setProjectionMatrix(game.camera.combined);
-        System.out.println(game.camera.position);
         //after 5 seconds repeat a game and set GameScreen
         timer.scheduleTask(new Timer.Task() {
             @Override

@@ -15,7 +15,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.screens.GameOverScreen;
-import com.mygdx.game.screens.GameScreen;
 
 import static com.mygdx.game.Constants.PPM;
 
@@ -67,6 +66,7 @@ public class MyGdxGame extends Game {
     public void dispose() {
         super.dispose();
     }
+
     //creating a box in the world with parameters
     public void createBox(float x, float y, float width, float height, boolean isStatic, World world) {
         Body body;
@@ -85,6 +85,7 @@ public class MyGdxGame extends Game {
         shape.dispose();
 
     }
+
     //generation of BitMapFont with white color and size parameter
     public BitmapFont createFont(int size) {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/" + "Roboto-Medium.ttf"));

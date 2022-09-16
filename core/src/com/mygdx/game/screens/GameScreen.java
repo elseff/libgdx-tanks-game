@@ -44,6 +44,7 @@ public class GameScreen implements Screen {
         contactListener = new B2dContactListener();
         world.setContactListener(contactListener);
         enemies = new Array<>();
+
         for (int i = 2; i < 7; i++) {
             enemies.add(new Panzer(world, i * 250, 550, GameObjectType.ENEMY));
         }
@@ -53,11 +54,13 @@ public class GameScreen implements Screen {
                 boxes.add(new Box(i * 90 + 1100, j * 90, world));
             }
         }
+
         //creating a world box
         game.createBox(groundTexture.getWidth() / 2f, 0, groundTexture.getWidth() / 2f, 1, true, world);
         game.createBox(groundTexture.getWidth() / 2f, groundTexture.getHeight(), groundTexture.getWidth() / 2f, 1, true, world);
         game.createBox(0, groundTexture.getHeight() / 2f, 1, groundTexture.getHeight() / 2f, true, world);
         game.createBox(groundTexture.getWidth(), groundTexture.getHeight() / 2f, 1, groundTexture.getHeight() / 2f, true, world);
+
         timer = new Timer();
         timer.scheduleTask(new Timer.Task() {
             @Override
@@ -78,6 +81,7 @@ public class GameScreen implements Screen {
         mouseDirection.x = game.camera.unproject(new Vector3(game.inputProcessor.getMousePos(), 0)).sub(me.getPosition().x * PPM).x;
         mouseDirection.y = game.camera.unproject(new Vector3(game.inputProcessor.getMousePos(), 0)).sub(me.getPosition().y * PPM).y;
         me.rotateTo(mouseDirection.angleDeg());
+
         me.move();
 
         for (int i = 0; i < enemies.size; i++) {
@@ -85,9 +89,9 @@ public class GameScreen implements Screen {
             currentEnemy.move();
             //rotating a enemy tanks on player
             Vector2 playerPosition = new Vector2();
-            playerPosition.set(me.getPosition().x*PPM,me.getPosition().y*PPM);
+            playerPosition.set(me.getPosition().x * PPM, me.getPosition().y * PPM);
             Vector2 currentEnemyPosition = new Vector2();
-            currentEnemyPosition.set(currentEnemy.getPosition().x*PPM, currentEnemy.getPosition().y*PPM);
+            currentEnemyPosition.set(currentEnemy.getPosition().x * PPM, currentEnemy.getPosition().y * PPM);
             float angle = playerPosition.sub(currentEnemyPosition).angleDeg();
             currentEnemy.rotateTo(angle);
         }
@@ -141,6 +145,7 @@ public class GameScreen implements Screen {
         }
         me.render(game.batch, game.font, game.shapeRenderer);
         game.batch.end();
+
         //mouse position in physical box2d world
         //VERY IMPORTANT!!!!!!
         Vector2 mousePosition = new Vector2();
@@ -176,13 +181,13 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        boxes.removeAll(boxes,true);
+        boxes.removeAll(boxes, true);
         groundTexture.dispose();
         me.dispose();
         for (int i = 0; i < enemies.size; i++) {
             enemies.get(i).dispose();
         }
-        enemies.removeAll(enemies,true);
+        enemies.removeAll(enemies, true);
         world.dispose();
         debugRenderer.dispose();
         timer.stop();

@@ -15,7 +15,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import static com.mygdx.game.Constants.PPM;
 
 /**
- *Tank class
+ * Tank class
  */
 public class Panzer {
     private Vector2 position = new Vector2();
@@ -117,7 +117,7 @@ public class Panzer {
         }
         font.draw(batch, "HP: " + ((int) healthPoints),
                 body.getPosition().x * PPM - 50,
-                body.getPosition().y * PPM + getTextureTower().getRegionHeight() +35);
+                body.getPosition().y * PPM + getTextureTower().getRegionHeight() + 35);
         batch.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.rect(body.getPosition().x * PPM - 50,
@@ -180,7 +180,8 @@ public class Panzer {
     public void setHealthPoints(float healthPoints) {
         this.healthPoints = healthPoints;
     }
-    public void dispose(){
+
+    public void dispose() {
         textureTower.getTexture().dispose();
         textureBody.getTexture().dispose();
     }
