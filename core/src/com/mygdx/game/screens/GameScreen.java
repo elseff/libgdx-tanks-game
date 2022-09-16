@@ -12,22 +12,25 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
-import com.mygdx.game.Box;
-import com.mygdx.game.GameObjectType;
-import com.mygdx.game.MyGdxGame;
-import com.mygdx.game.Panzer;
+import com.mygdx.game.*;
 
 import static com.mygdx.game.Constants.PPM;
 
+/**
+ * Main Game Screen
+ */
 public class GameScreen implements Screen {
     private final MyGdxGame game;
     public Array<Box> boxes = new Array<>();
+    //background texture
     public Texture groundTexture;
     public Panzer me;
     public Array<Panzer> enemies;
     public World world;
     public Box2DDebugRenderer debugRenderer;
     public Timer timer;
+    public B2dContactListener contactListener;
+
     public GameScreen(MyGdxGame game) {
         this.game = game;
     }
@@ -38,7 +41,8 @@ public class GameScreen implements Screen {
         world = new World(new Vector2(0, 0), true);
         game.font = game.createFont(18);
         debugRenderer = new Box2DDebugRenderer();
-
+        contactListener = new B2dContactListener();
+        world.setContactListener(contactListener);
         enemies = new Array<>();
         for (int i = 2; i < 7; i++) {
             enemies.add(new Panzer(world, i * 250, 550, GameObjectType.ENEMY));
@@ -49,6 +53,7 @@ public class GameScreen implements Screen {
                 boxes.add(new Box(i * 90 + 1100, j * 90, world));
             }
         }
+        //creating a world box
         game.createBox(groundTexture.getWidth() / 2f, 0, groundTexture.getWidth() / 2f, 1, true, world);
         game.createBox(groundTexture.getWidth() / 2f, groundTexture.getHeight(), groundTexture.getWidth() / 2f, 1, true, world);
         game.createBox(0, groundTexture.getHeight() / 2f, 1, groundTexture.getHeight() / 2f, true, world);
@@ -58,7 +63,7 @@ public class GameScreen implements Screen {
             @Override
             public void run() {
                 enemies.forEach(enemy -> enemy.setHealthPoints(enemy.getHealthPoints() - 3f));
-                me.setHealthPoints(me.getHealthPoints() - 5f);
+                me.setHealthPoints(me.getHealthPoints() - .5f);
             }
         }, 1, 1);
     }
@@ -68,7 +73,7 @@ public class GameScreen implements Screen {
         inputUpdate();
         cameraUpdate();
         game.inputProcessor.updateMousePos();
-
+        //mouse position in physical box2d world
         Vector2 mouseDirection = new Vector2();
         mouseDirection.x = game.camera.unproject(new Vector3(game.inputProcessor.getMousePos(), 0)).sub(me.getPosition().x * PPM).x;
         mouseDirection.y = game.camera.unproject(new Vector3(game.inputProcessor.getMousePos(), 0)).sub(me.getPosition().y * PPM).y;
@@ -78,6 +83,7 @@ public class GameScreen implements Screen {
         for (int i = 0; i < enemies.size; i++) {
             Panzer currentEnemy = enemies.get(i);
             currentEnemy.move();
+            //rotating a enemy tanks on player
             Vector2 playerPosition = new Vector2();
             playerPosition.set(me.getPosition().x*PPM,me.getPosition().y*PPM);
             Vector2 currentEnemyPosition = new Vector2();
@@ -99,6 +105,7 @@ public class GameScreen implements Screen {
     }
 
     public void cameraUpdate() {
+        //set camera position to player position
         game.camera.position.x = me.getPosition().x * PPM;
         game.camera.position.y = me.getPosition().y * PPM;
         game.camera.update();
@@ -134,7 +141,7 @@ public class GameScreen implements Screen {
         }
         me.render(game.batch, game.font, game.shapeRenderer);
         game.batch.end();
-
+        //mouse position in physical box2d world
         //VERY IMPORTANT!!!!!!
         Vector2 mousePosition = new Vector2();
         mousePosition.set(game.viewport.getCamera().unproject(new Vector3(game.inputProcessor.getMousePos(), 0)).x, game.viewport.getCamera().unproject(new Vector3(game.inputProcessor.getMousePos(), 0)).y);

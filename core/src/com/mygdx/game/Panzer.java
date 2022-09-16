@@ -14,7 +14,9 @@ import com.badlogic.gdx.physics.box2d.*;
 
 import static com.mygdx.game.Constants.PPM;
 
-
+/**
+ *Tank class
+ */
 public class Panzer {
     private Vector2 position = new Vector2();
     private TextureRegion textureTower;
@@ -23,7 +25,9 @@ public class Panzer {
     private final Vector2 direction = new Vector2();
     private final GameObjectType type;
     private final Body body;
+    //speed of rotating a tower
     private final float rotationalVelocity = 5f;
+    //speed of moving
     private final float speed = 30f;
     private float healthPoints;
 
@@ -123,6 +127,7 @@ public class Panzer {
         batch.begin();
     }
 
+    //moving tank if he is a player
     public void move() {
         if (type == GameObjectType.PLAYER) {
             if (Gdx.input.isKeyPressed(Input.Keys.A)) {
@@ -149,11 +154,13 @@ public class Panzer {
                 if (direction.isZero()) direction.x += speed;
                 body.setLinearVelocity(-direction.x / 1.7f, -direction.y / 1.7f);
             }
+            //apply changes of position and rotate depends of direction
             body.setTransform(body.getPosition().x, body.getPosition().y, direction.angleRad());
         }
         position = body.getPosition();
     }
 
+    //rotate a tower by angle in degrees
     public void rotateTo(float angle) {
         this.angleTower = angle;
     }
