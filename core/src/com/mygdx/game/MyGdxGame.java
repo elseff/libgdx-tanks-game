@@ -14,10 +14,14 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.mygdx.game.screens.GameOverScreen;
 import com.mygdx.game.screens.GameScreen;
 
 import static com.mygdx.game.Constants.PPM;
 
+/**
+ * Main Game class
+ */
 public class MyGdxGame extends Game {
     public static final int SCREEN_WIDTH = 1000;
     public static final int SCREEN_HEIGHT = 800;
@@ -26,7 +30,6 @@ public class MyGdxGame extends Game {
     public SpriteBatch batch;
     public OrthographicCamera camera;
     public Viewport viewport;
-
     public MyInputAdapter inputProcessor;
 
     public ShapeRenderer shapeRenderer;
@@ -47,7 +50,7 @@ public class MyGdxGame extends Game {
 
         font = createFont(18);
 
-        setScreen(new GameScreen(this));
+        setScreen(new GameOverScreen(this));
     }
 
     @Override
@@ -64,7 +67,7 @@ public class MyGdxGame extends Game {
     public void dispose() {
         super.dispose();
     }
-
+    //creating a box in the world with parameters
     public void createBox(float x, float y, float width, float height, boolean isStatic, World world) {
         Body body;
         BodyDef bodyDef = new BodyDef();
@@ -82,7 +85,7 @@ public class MyGdxGame extends Game {
         shape.dispose();
 
     }
-
+    //generation of BitMapFont with white color and size parameter
     public BitmapFont createFont(int size) {
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/" + "Roboto-Medium.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();

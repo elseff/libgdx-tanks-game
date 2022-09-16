@@ -8,6 +8,9 @@ import com.badlogic.gdx.physics.box2d.*;
 
 import static com.mygdx.game.Constants.PPM;
 
+/**
+ * Box class
+ */
 public class Box {
     private Vector2 position;
     private final TextureRegion texture;

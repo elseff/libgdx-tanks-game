@@ -7,6 +7,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.Timer;
 import com.mygdx.game.MyGdxGame;
 
+/**
+ * Screen of Game Over
+ */
 public class GameOverScreen implements Screen {
 
     private final MyGdxGame game;
@@ -24,6 +27,7 @@ public class GameOverScreen implements Screen {
         game.camera.update();
         game.batch.setProjectionMatrix(game.camera.combined);
         System.out.println(game.camera.position);
+        //after 5 seconds repeat a game and set GameScreen
         timer.scheduleTask(new Timer.Task() {
             @Override
             public void run() {
@@ -70,7 +74,7 @@ public class GameOverScreen implements Screen {
         game.batch.begin();
         game.font.draw(game.batch, "GAME OVER", MyGdxGame.SCREEN_WIDTH / 2f - 100, MyGdxGame.SCREEN_HEIGHT / 1.9f);
         game.font = game.createFont(25);
-        game.font.draw(game.batch, "restart in 5 seconds", MyGdxGame.SCREEN_WIDTH / 2f - 100, MyGdxGame.SCREEN_HEIGHT / 2.2f);
+        game.font.draw(game.batch, "restart in 5 seconds", MyGdxGame.SCREEN_WIDTH / 2f - 77, MyGdxGame.SCREEN_HEIGHT / 2.2f);
         game.font = game.createFont(50);
         game.batch.end();
     }
