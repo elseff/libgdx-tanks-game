@@ -11,12 +11,15 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import static com.mygdx.game.Constants.PPM;
 
 /**
  * Tank class
  */
+@Getter
 public class Panzer {
     private Vector2 position = new Vector2();
     private TextureRegion textureTower;
@@ -29,6 +32,7 @@ public class Panzer {
     private final float rotationalVelocity = 5f;
     //speed of moving
     private final float speed = 30f;
+    @Setter
     private float healthPoints;
 
     public Panzer(World world, float x, float y) {
@@ -163,22 +167,6 @@ public class Panzer {
     //rotate a tower by angle in degrees
     public void rotateTo(float angle) {
         this.angleTower = angle;
-    }
-
-    public Vector2 getPosition() {
-        return position;
-    }
-
-    public TextureRegion getTextureTower() {
-        return textureTower;
-    }
-
-    public float getHealthPoints() {
-        return healthPoints;
-    }
-
-    public void setHealthPoints(float healthPoints) {
-        this.healthPoints = healthPoints;
     }
 
     public void dispose() {

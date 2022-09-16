@@ -15,25 +15,30 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.screens.GameOverScreen;
+import com.mygdx.game.screens.GameScreen;
+import lombok.Getter;
+import lombok.Setter;
 
 import static com.mygdx.game.Constants.PPM;
 
 /**
  * Main Game class
  */
+@Getter
 public class MyGdxGame extends Game {
     public static final int SCREEN_WIDTH = 1000;
     public static final int SCREEN_HEIGHT = 800;
     public static float SCALE = 1f;
 
-    public SpriteBatch batch;
-    public OrthographicCamera camera;
-    public Viewport viewport;
-    public MyInputAdapter inputProcessor;
+    private SpriteBatch batch;
+    private OrthographicCamera camera;
+    private Viewport viewport;
+    private MyInputAdapter inputProcessor;
 
-    public ShapeRenderer shapeRenderer;
+    private ShapeRenderer shapeRenderer;
 
-    public BitmapFont font;
+    @Setter
+    private BitmapFont font;
 
     @Override
     public void create() {
@@ -49,7 +54,7 @@ public class MyGdxGame extends Game {
 
         font = createFont(18);
 
-        setScreen(new GameOverScreen(this));
+        setScreen(new GameScreen(this));
     }
 
     @Override

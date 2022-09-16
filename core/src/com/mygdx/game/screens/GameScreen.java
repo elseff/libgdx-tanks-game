@@ -21,15 +21,15 @@ import static com.mygdx.game.Constants.PPM;
  */
 public class GameScreen implements Screen {
     private final MyGdxGame game;
-    public Array<Box> boxes = new Array<>();
+    private Array<Box> boxes = new Array<>();
     //background texture
-    public Texture groundTexture;
-    public Panzer me;
-    public Array<Panzer> enemies;
-    public World world;
-    public Box2DDebugRenderer debugRenderer;
-    public Timer timer;
-    public B2dContactListener contactListener;
+    private Texture groundTexture;
+    private Panzer me;
+    private Array<Panzer> enemies;
+    private World world;
+    private Box2DDebugRenderer debugRenderer;
+    private Timer timer;
+    private B2dContactListener contactListener;
 
     public GameScreen(MyGdxGame game) {
         this.game = game;
@@ -39,7 +39,7 @@ public class GameScreen implements Screen {
     public void show() {
         groundTexture = new Texture("ground.png");
         world = new World(new Vector2(0, 0), true);
-        game.font = game.createFont(18);
+        game.setFont(game.createFont(18));
         debugRenderer = new Box2DDebugRenderer();
         contactListener = new B2dContactListener();
         world.setContactListener(contactListener);
@@ -75,11 +75,11 @@ public class GameScreen implements Screen {
         scaleUpdate(delta);
         inputUpdate();
         cameraUpdate();
-        game.inputProcessor.updateMousePos();
+        game.getInputProcessor().updateMousePos();
         //mouse position in physical box2d world
         Vector2 mouseDirection = new Vector2();
-        mouseDirection.x = game.camera.unproject(new Vector3(game.inputProcessor.getMousePos(), 0)).sub(me.getPosition().x * PPM).x;
-        mouseDirection.y = game.camera.unproject(new Vector3(game.inputProcessor.getMousePos(), 0)).sub(me.getPosition().y * PPM).y;
+        mouseDirection.x = game.getCamera().unproject(new Vector3(game.getInputProcessor().getMousePos(), 0)).sub(me.getPosition().x * PPM).x;
+        mouseDirection.y = game.getCamera().unproject(new Vector3(game.getInputProcessor().getMousePos(), 0)).sub(me.getPosition().y * PPM).y;
         me.rotateTo(mouseDirection.angleDeg());
 
         me.move();
@@ -96,8 +96,8 @@ public class GameScreen implements Screen {
             currentEnemy.rotateTo(angle);
         }
 
-        game.batch.setProjectionMatrix(game.camera.combined);
-        game.shapeRenderer.setProjectionMatrix(game.camera.combined);
+        game.getBatch().setProjectionMatrix(game.getCamera().combined);
+        game.getShapeRenderer().setProjectionMatrix(game.getCamera().combined);
 
         world.step(1 / 60f, 6, 2);
     }
@@ -110,9 +110,9 @@ public class GameScreen implements Screen {
 
     public void cameraUpdate() {
         //set camera position to player position
-        game.camera.position.x = me.getPosition().x * PPM;
-        game.camera.position.y = me.getPosition().y * PPM;
-        game.camera.update();
+        game.getCamera().position.x = me.getPosition().x * PPM;
+        game.getCamera().position.y = me.getPosition().y * PPM;
+        game.getCamera().update();
     }
 
     private void scaleUpdate(float delta) {
@@ -122,8 +122,8 @@ public class GameScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_ADD) && MyGdxGame.SCALE <= 1.3) {
             MyGdxGame.SCALE += delta;
         }
-        game.camera.setToOrtho(false, MyGdxGame.SCREEN_WIDTH / MyGdxGame.SCALE, MyGdxGame.SCREEN_HEIGHT / MyGdxGame.SCALE);
-        game.camera.update();
+        game.getCamera().setToOrtho(false, MyGdxGame.SCREEN_WIDTH / MyGdxGame.SCALE, MyGdxGame.SCREEN_HEIGHT / MyGdxGame.SCALE);
+        game.getCamera().update();
     }
 
     @Override
@@ -133,38 +133,39 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(.25f, .25f, .25f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        game.batch.begin();
-        game.batch.draw(groundTexture, 0, 0);
+        game.getBatch().begin();
+        game.getBatch().draw(groundTexture, 0, 0);
         for (int i = 0; i < boxes.size; i++) {
             Box currentBox = boxes.get(i);
-            currentBox.render(game.batch);
+            currentBox.render(game.getBatch());
         }
         for (int i = 0; i < enemies.size; i++) {
             Panzer currentEnemy = enemies.get(i);
-            currentEnemy.render(game.batch, game.font, game.shapeRenderer);
+            currentEnemy.render(game.getBatch(), game.getFont(), game.getShapeRenderer());
         }
-        me.render(game.batch, game.font, game.shapeRenderer);
-        game.batch.end();
+        me.render(game.getBatch(), game.getFont(), game.getShapeRenderer());
+        game.getBatch().end();
 
         //mouse position in physical box2d world
         //VERY IMPORTANT!!!!!!
         Vector2 mousePosition = new Vector2();
-        mousePosition.set(game.viewport.getCamera().unproject(new Vector3(game.inputProcessor.getMousePos(), 0)).x, game.viewport.getCamera().unproject(new Vector3(game.inputProcessor.getMousePos(), 0)).y);
+        mousePosition.set(game.getViewport().getCamera().unproject(new Vector3(game.getInputProcessor().getMousePos(), 0)).x,
+                game.getViewport().getCamera().unproject(new Vector3(game.getInputProcessor().getMousePos(), 0)).y);
         //VERY IMPORTANT!!!!!!
 
-        game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        game.shapeRenderer.circle(mousePosition.x, mousePosition.y, 10);
-        game.shapeRenderer.end();
+        game.getShapeRenderer().begin(ShapeRenderer.ShapeType.Filled);
+        game.getShapeRenderer().circle(mousePosition.x, mousePosition.y, 10);
+        game.getShapeRenderer().end();
         if (me.getHealthPoints() <= 0) {
             game.setScreen(new GameOverScreen(game));
         }
-        debugRenderer.render(world, game.camera.combined.scl(PPM));
+        debugRenderer.render(world, game.getCamera().combined.scl(PPM));
     }
 
     @Override
     public void resize(int width, int height) {
-        game.camera.setToOrtho(false, MyGdxGame.SCREEN_WIDTH / MyGdxGame.SCALE, MyGdxGame.SCREEN_HEIGHT / MyGdxGame.SCALE);
-        game.camera.update();
+        game.getCamera().setToOrtho(false, MyGdxGame.SCREEN_WIDTH / MyGdxGame.SCALE, MyGdxGame.SCREEN_HEIGHT / MyGdxGame.SCALE);
+        game.getCamera().update();
     }
 
     @Override

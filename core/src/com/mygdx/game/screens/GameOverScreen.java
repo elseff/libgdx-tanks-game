@@ -20,11 +20,11 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void show() {
-        game.font = game.createFont(50);
+        game.setFont(game.createFont(50));
         timer = new Timer();
-        game.camera.position.set(0, 0, 0);
-        game.camera.update();
-        game.batch.setProjectionMatrix(game.camera.combined);
+        game.getCamera().position.set(0, 0, 0);
+        game.getCamera().update();
+        game.getBatch().setProjectionMatrix(game.getCamera().combined);
         //after 5 seconds repeat a game and set GameScreen
         timer.scheduleTask(new Timer.Task() {
             @Override
@@ -38,9 +38,9 @@ public class GameOverScreen implements Screen {
         scaleUpdate(delta);
         inputUpdate();
         cameraUpdate();
-        game.inputProcessor.updateMousePos();
-        game.batch.setProjectionMatrix(game.camera.combined);
-        game.shapeRenderer.setProjectionMatrix(game.camera.combined);
+        game.getInputProcessor().updateMousePos();
+        game.getBatch().setProjectionMatrix(game.getCamera().combined);
+        game.getShapeRenderer().setProjectionMatrix(game.getCamera().combined);
     }
 
     public void inputUpdate() {
@@ -50,7 +50,7 @@ public class GameOverScreen implements Screen {
     }
 
     public void cameraUpdate() {
-        game.camera.update();
+        game.getCamera().update();
     }
 
     private void scaleUpdate(float delta) {
@@ -60,8 +60,8 @@ public class GameOverScreen implements Screen {
         if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_ADD) && MyGdxGame.SCALE <= 1.3) {
             MyGdxGame.SCALE += delta;
         }
-        game.camera.setToOrtho(false, MyGdxGame.SCREEN_WIDTH / MyGdxGame.SCALE, MyGdxGame.SCREEN_HEIGHT / MyGdxGame.SCALE);
-        game.camera.update();
+        game.getCamera().setToOrtho(false, MyGdxGame.SCREEN_WIDTH / MyGdxGame.SCALE, MyGdxGame.SCREEN_HEIGHT / MyGdxGame.SCALE);
+        game.getCamera().update();
     }
 
     @Override
@@ -69,18 +69,18 @@ public class GameOverScreen implements Screen {
         update(delta);
         Gdx.gl.glClearColor(.21115f, .25f, .25f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        game.batch.begin();
-        game.font.draw(game.batch, "GAME OVER", MyGdxGame.SCREEN_WIDTH / 2f - 100, MyGdxGame.SCREEN_HEIGHT / 1.9f);
-        game.font = game.createFont(25);
-        game.font.draw(game.batch, "restart in 5 seconds", MyGdxGame.SCREEN_WIDTH / 2f - 77, MyGdxGame.SCREEN_HEIGHT / 2.2f);
-        game.font = game.createFont(50);
-        game.batch.end();
+        game.getBatch().begin();
+        game.getFont().draw(game.getBatch(), "GAME OVER", MyGdxGame.SCREEN_WIDTH / 2f - 100, MyGdxGame.SCREEN_HEIGHT / 1.9f);
+        game.setFont(game.createFont(25));
+        game.getFont().draw(game.getBatch(), "restart in 5 seconds", MyGdxGame.SCREEN_WIDTH / 2f - 77, MyGdxGame.SCREEN_HEIGHT / 2.2f);
+        game.setFont(game.createFont(50));
+        game.getBatch().end();
     }
 
     @Override
     public void resize(int width, int height) {
-        game.camera.setToOrtho(false, MyGdxGame.SCREEN_WIDTH / MyGdxGame.SCALE, MyGdxGame.SCREEN_HEIGHT / MyGdxGame.SCALE);
-        game.camera.update();
+        game.getCamera().setToOrtho(false, MyGdxGame.SCREEN_WIDTH / MyGdxGame.SCALE, MyGdxGame.SCREEN_HEIGHT / MyGdxGame.SCALE);
+        game.getCamera().update();
     }
 
     @Override
