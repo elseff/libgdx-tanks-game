@@ -13,6 +13,9 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.mygdx.game.*;
+import com.mygdx.game.engines.MyECSEngine;
+import com.mygdx.game.systems.MovementSystem;
+import com.mygdx.game.systems.RenderSystem;
 
 import static com.mygdx.game.Constants.PPM;
 
@@ -21,6 +24,10 @@ import static com.mygdx.game.Constants.PPM;
  */
 public class GameScreen implements Screen {
     private final MyGdxGame game;
+    private MyECSEngine engine;
+    private RenderSystem renderSystem;
+    private MovementSystem movementSystem;
+
     private Array<Box> boxes = new Array<>();
     //background texture
     private Texture groundTexture;
@@ -33,12 +40,17 @@ public class GameScreen implements Screen {
 
     public GameScreen(MyGdxGame game) {
         this.game = game;
+        engine = new MyECSEngine();
+        renderSystem = new RenderSystem(engine);
+        movementSystem = new MovementSystem(engine);
+        engine.addSystem(renderSystem);
+        engine.addSystem(movementSystem);
     }
 
     @Override
     public void show() {
         groundTexture = new Texture("ground.png");
-        world = new World(new Vector2(0, 0), true);
+        world = new World(new Vector2(0, 0), false);
         game.setFont(game.createFont(18));
         debugRenderer = new Box2DDebugRenderer();
         contactListener = new B2dContactListener();

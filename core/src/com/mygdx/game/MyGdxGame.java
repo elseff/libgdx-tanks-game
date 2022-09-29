@@ -50,7 +50,6 @@ public class MyGdxGame extends Game {
         shapeRenderer = new ShapeRenderer();
 
         inputProcessor = new MyInputAdapter();
-        Gdx.input.setInputProcessor(inputProcessor);
 
         font = createFont(18);
 

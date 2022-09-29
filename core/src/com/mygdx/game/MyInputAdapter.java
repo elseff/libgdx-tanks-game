@@ -1,7 +1,6 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
 import lombok.Getter;
 
@@ -9,7 +8,7 @@ import lombok.Getter;
  * Mouse move listener
  */
 @Getter
-public class MyInputAdapter extends InputAdapter {
+public class MyInputAdapter {
     private final Vector2 mousePos = new Vector2();
 
     public void updateMousePos() {
